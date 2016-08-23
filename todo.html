@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>TODO PAGE</title>
+<link href="css/todo.css" rel="stylesheet">
+<link href='http://fonts.googleapis.com/css?family=Ropa+Sans' rel='stylesheet'>
+
+ </head>
+ <body>
+  
+
+<div class="container">
+  
+  <div class="column">
+       <center><p><label for="new-task">Add Item</label></center>
+ <input id="new-task" type="text">
+<br>
+<br>
+    <center>
+    <button class="button button-primary">Add</button></center>
+        </p>
+      </div>
+      
+  <div class="column">
+    <h3><center>Todo</center></h3>
+    <div class="cards">
+      <ul id="incomplete-tasks" class="draggable">
+       
+    </ul>
+  </div>
+   </div>
+
+  <div class="column">
+    <h3><center>Onprocess</center></h3>
+    <div class="cards">
+    <ul id="tasktocomplete-tasks" class="draggable"> 
+      </ul>
+  </div>
+   </div>
+
+
+    <div class="column">
+      
+      <h3><center>Done</center></h3>
+      <div class= "cards">
+      <ul id="completed-tasks" class="draggable"> 
+        </ul>
+    </div>
+   </div>
+
+    </div>
+  
+ <script type="text/javascript" src="js\todo.js"></script>
+
+<script type="text/javascript">
+  
+var obj = '#incomplete-tasks,#tasktocomplete-tasks,#completed-tasks',timer;
+
+function loadMore(){
+  $('.loadMore').addClass('animateLoadMore');
+  setTimeout(function(){
+    $('.loadMore').removeClass('animateLoadMore').hide();
+    $('.hide').show().removeClass('hide');
+    $(obj).sortable('refresh');
+  }, 600)
+}
+
+$(obj + ', .cards').sortable({
+  connectWith: '.draggable,.cards',
+  placeholder: 'highlight',
+  opacity: 0.5,
+  revert: true,
+  start(event,ui){
+    $(obj).sortable('refresh');
+  },
+  over(event,ui){
+    $(this).parent().find('.cards').addClass('columnHover');
+  },
+  out(event,ui){
+    $(this).parent().find('.cards').removeClass('columnHover');
+  }
+}).disableSelection();
+
+$('.loadMore').droppable({
+  hoverClass: 'hover',
+  over(event, ui){
+    console.log('Over!')
+    if (!timer) {
+      timer = window.setTimeout(function() {
+        timer = null;
+        loadMore();
+      }, 300);
+    }
+  },
+  out(event, ui){
+    window.clearTimeout(timer);
+    timer = null;
+  }
+});
+
+$('.hide').hide();
+
+$('.loadMore').click(function(){
+  $('.hide').show().removeClass('hide');
+  $(this).hide();
+});
+
+
+  
+</script>
+
+
+
+  
+  
+  </body>
+ 
+  </html>
